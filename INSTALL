@@ -1,0 +1,10 @@
+INSTALL
+
+TO INSTALL ON UNIX:
+As root, run "./install.sh" .
+
+TO INSTALL ON OTHER SYSTEMS:
+Copy the files from lib/ manually to wherever you want to load them 
+from. doc/api.txt contains the API reference.
+
+

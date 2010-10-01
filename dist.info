@@ -1,0 +1,15 @@
+--- This file is part of LuaDist project
+
+name = "objl"
+version = "0.05aplpha"
+
+desc = "An OO framework for Lua similar to that of Objective C, containing objects with multiple inheritence and forwarding to other objects, possibly between processes and machines."
+author = "John Ohno"
+license = "GNU LGPL"
+url = "http://luaforge.net/projects/objl"
+maintainer = "Peter Kapec"
+
+depends = {
+	"lua ~> 5.1",
+	"luasocket >=2.0.2",
+}

@@ -1,0 +1,49 @@
+ACTORS
+
+ObjL can be used as the basis for a somewhat limited form of Concurrent 
+Programming using the Actor Model.
+
+Concurrent programming generally refers to the programming of code that is 
+spread between many, simultaneously running program instances, such as threads 
+or code running on separate processors.
+
+The main problems that each form of concurrent programming must solve are:
+- Running in parallel - Each piece of code must come in the requisite order, but
+said code must run in parallel.
+- Coordinating access to resources - Code may not interfere with the working of 
+other code, or with the validity of shared data.
+
+The actor model traditionally solves these problems by having each process be 
+an encapsulated, independent piece of code that communicates to other actors 
+via message passing. However, that still leaves issues of coordinating access 
+to resources, as multiple requests to the same actor may interfere with one 
+another.
+
+The ObjL actor model is a simplified, semi-concurrent form of the actor model. 
+It solves the problem of resource access coordination by making each group of 
+processes run in non-preemptive threads (the cooperative multitasking method 
+known in Lua as 'coroutines'), and each of these groups of coroutines an 
+independent process. Each process has shared data, which cannot be corrupted by 
+parallel processing of the coroutines, and each coroutine accepts messages in 
+serial, however each of these processes may interoperate in parallel, and each 
+thread acts as if it is working in parallel. All groups of statements that are 
+between calls of coroutine.yield() are considered atomic, and therefore the 
+data set in them cannot be corrupted due to the parallelization.
+
+The act of forwarding turns message passing into a simulation of shared 
+dataspace for methods, even though it still works as message passing. 
+Additionally, responses are semi-asynchronous, because the thread only pauses 
+if the returned result is to be used in a later computation, otherwise the 
+result is recieved and discarded while the other thread runs normally. This 
+solves the problem of asynchronous operations when results are necessary, as 
+well as the problem of synchronous operations holding up processing when 
+results are not. If the result is not immediately necessary and should not hold 
+up computation, but is necessary for a later computation, one may create 
+another coroutine for the reception and assignment of the result, and then 
+check to see if the coroutine finished or if the result variable is assigned 
+before execution of the later computation.
+
+Virtual shared memory is provided via variable forwarding, which provides the 
+same functionality as method forwarding via mostly the same functionalities, 
+except for non-function variables.
+

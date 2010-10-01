@@ -1,0 +1,58 @@
+ObjL API reference
+(c) 2006 John Ohno
+Licensed under the GNU FDL
+
+ObjL.lua:
+	(nothing defined)
+
+objl_base.lua:
+	ObjL		-- A table storing general purpose functions and data 
+			for ObjL backend use.
+	ObjL.threads	-- A table containing coroutine objects for running 
+			threads
+	ObjL.makethread(f)
+			-- A function that creates a thread for function f and 
+			adds it to ObjL.threads, returning it
+	ObjL.mainloop()	-- A function that runs all the threads in ObjL.threads
+	ObjL.serialize(o)
+			-- A function that serializes tables for sending over
+			sockets. DOES NOT ACCEPT CYCLES!
+	ObjL.unserialize(o)
+			-- A function that unserializes data from socket 	
+			communication. Currently just does a loadstring().
+	ObjL.help()	-- Prints help info
+
+objl_obj.lua:
+	ObjL_Object	-- A table containing the prototype for an object in 
+			ObjL
+	ObjL_Object:serialize()
+			-- Serializes the current object
+	class(...)	-- A function that creates a new class. It is passed 
+			any number of parent classes to inherit from, and 
+			returns a conglomeration of all parent classes, with 
+			a new() method.
+		new(o)	-- A function that optionally takes one argument, 
+			an object to conglomerate with, and returns a new 
+			object of that class type.
+
+objl_comm.lua:
+	ObjL_Object:
+ 	receive(msg, args)	
+			-- A method that calls a function with the 
+ 			given name (msg) with the given args (args).
+ 	forward(msg, func, address, port, msg2)
+			-- A method that initiates a forward to another 
+			object, possibly served from another process or 
+			machine (via sockets). Links msg to the function 
+			func if address and port are nil, otherwise links 
+			it to a new function that sends the request to the 
+			server on address and port to run msg2 on that func, 
+			unless msg2 is nil, in which case it runs msg instead.
+	forwardvar(msg, var, address, port, msg2)
+			-- The same as forward(), except for variables
+	ObjL:
+	serve(address, port, backlog)
+			-- A function that creates a coroutine server to allow 
+			other processes or machines to forward to objects on 
+			this process.
+

@@ -1,0 +1,28 @@
+DOCS README
+
+This directory contains ObjL documentation in ASCII text format.
+Files:
+	- api.txt	The ObjL API, complete with functions, objects, 
+			variables, and descriptions
+	- objects.txt	An ObjL object model tutorial
+	- objl_c_interface.txt
+			A tutorial on creating ObjL libraries in C
+	- capi_helpers.txt
+			The specs on a few functions included in this package 
+			that may help you make your Lua C extensions more 
+			readable and easier to code and maintain.
+	- actor.txt	Information on how to do concurrent programming using 
+			ObjL and a modified form of the Actor Model
+
+
+Read api.txt and objects.txt if you wish to code in ObjL.
+
+Read objl_c_interface.txt if you wish to code interfaces between C libraries 
+and ObjL, instead of just pure Lua.
+
+Read capi_helpers.txt if you wish to code interface between C libraries and 
+either ObjL or pure Lua.
+
+Read actor.txt if you wish to do concurrent programming with ObjL.
+
+
