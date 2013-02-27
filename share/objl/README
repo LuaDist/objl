@@ -1,0 +1,93 @@
+    ##########   #######    #########   ##                   ____ o
+   ##      ##   ##    ##       ##      ##                   /   o\
+  ##      ##   ##  ###   ##   ##      ##     Objective Lua | O  O |
+ ##      ##   ##    ##  ##   ##      ##                     \____/
+##########   #######     #####      ######### (c) 2006 John Ohno
+                                             Licensed under the GNU LGPL
+ #####################################################################
+#####################################################################
+
+So you've downloaded ObjL. You're probably wondering what the hell it is, and 
+why the hell you downloaded it. Or, alternately, you could be wondering how 
+the hell someone came up with something so Insanely Great and how the hell 
+to install it (hey, it could happen ^.~ ). Well, this document will (hopefully) 
+answer all such questions, or at least point you to someone who can.
+
+
+WHAT IS OBJL?
+ObjL is Objective Lua, an attempt at making Lua object oriented. "Why," you may 
+say, "when so many people have already done so -- and when most people simply 
+implement a new one for each project!" Well, ObjL isn't just ANY oo system -- 
+it is based upon the design goals of Objective C, and therefore aims to meet 
+the following criteria:
+- It provides a full Object Orientation system, including multiple inheritence, 
+classes, constructors, and even some less common features like inheritence on 
+object creation.
+- It is very small and light -- simply a tiny upper layer to the language.
+- It provides Objective C's concept of method forwarding -- allowing objects to 
+field method calls to other objects, possibly across processes or a network, 
+while making it seem as if the call was completely local to said object.
+- It retains support for manual modification of objects and their contents, 
+via any method used in pure lua.
+- It provides all this without modifying the underlying language at all -- only 
+extending it.
+
+WHY USE OBJL?
+- ObjL is small, light, and fast. The overhead is epsilon when compared to the 
+flexibility and functionality it brings to the programmer.
+- ObjL is pure lua -- no recompiling or messing with dynamic libraries.
+- ObjL provides the functionality of an object orientation framework and an 
+object brokering system to lua, in a small package.
+
+WHAT ARE SOME GOOD APPLICATIONS FOR OBJL?
+- Clustering
+- Inter-process communication
+- Behavior-based AI
+- Games
+- Desktop integration
+- Network apps
+- Home automation
+- Anything that requires functional object orientation
+
+INSTALLATION
+See INSTALL file for details.
+
+WHAT'S IN THE PACKAGE?
+The package has a number of directories. They are:
+	- doc/		Documentation and tutorials (ASCII text; see doc/README 
+			for details on contents)
+	- examples/ 	Various code examples for applying ObjL
+	- lib/		The ObjL library itself
+	- src/		Various C/C++ code useful for C API developers
+	- tools/	A few utility scripts useful to users of this package
+	- test/		A few ObjL testing scripts
+
+
+WHERE TO GET OBJL
+For more details, new releases, help, and community interaction, check out:
+	http://luaforge.net/projects/objl
+
+If you can't find anything to help you, and nobody knows the answer, as a last 
+resort you can email me at:
+	john.ohno@gmail.com
+Put "ObjL" in the subject line.
+
+
+~John Ohno
+President/Accela Labs
+Lead Developer/ObjL
+
+
+Note:
+If you like ObjL and want to drop me a line in a fun way, send me a postcard:
+
+	John Ohno
+	Accela Labs
+	81 Pond Hill Rd
+	North Haven, CT
+	06473
+	USA
+
+By the way, I don't want you dropping by my house -- trespassers are shot ;-)
+
+

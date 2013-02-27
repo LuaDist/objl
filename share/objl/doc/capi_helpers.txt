@@ -1,0 +1,53 @@
+C API HELPERS
+
+We have put in a few functions to simplify your life in regards to ObjL C API 
+interfacing. These are located in src/objl_misc.h .
+
+The functions are as follows:
+	void setuserdata(lua_State *L, void x)
+	void loadlibs(lua_State *L, static struct luaL_reg** libs, const char** names, int count)
+
+The function setuserdata() takes a lua_State and a userdata (void x), and makes 
+the userdata point to the object. This may seem trivial, but it saves a lot of 
+code in large projects, as normally you need to define a separate instance of 
+the userdata that you wish to push, and then create the pointer later, and then 
+assign it, all manually. 
+To see the effect, here's an example of code not using setuserdata():
+	static int newWidget(lua_State *L) {
+		Widget w=Widget->new();
+		Widget *w2=lua_newuserdata(L, sizeof(w));
+		w=w2;
+		return 1;
+	}
+Now here's the same function, except using setuserdata():
+	static int newWidget(lua_State *L) {
+		setuserdata(L, Widget->new());
+		return 1;
+	}
+
+The function loadlibs() is a way of automating all that annoying class 
+generation and fieldsetting required in packing ObjL classes into a lua 
+package. Here's some code without it:
+	static int luaopen_foo(lua_State *L) {
+		luaL_openlib(L, "foo", foo); // main package
+		luaL_openlib(L, "bar", bar); // class
+		lua_setfield(L, -2, "bar"); // packing it in
+		luaL_openlib(L, "baz", baz); // class
+		lua_setfield(L, -2, "baz"); // packing it in
+		luaL_openlib(L, "septa", septa); // class
+		lua_setfield(L, -2, "septa") // packing it in
+		return 1;
+	}
+Now, here's the same code with it:
+	static int luaopen_foo(lua_State *L) {
+		static struct luaL_reg** libs={bar, baz, septa};
+		const char ** names={"bar", "baz", "septa"};
+		luaL_openlib(L, "foo", "foo");
+		loadlibs(L, libs, names, 3);
+		return 1;
+	}
+Much easier to write and maintain.
+
+By the way, these functions may actually be useful for pure Lua C API code, not 
+just ObjL C API code.
+

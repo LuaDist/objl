@@ -1,0 +1,47 @@
+Creating ObjL libraries in C:
+
+First, take all the functions you want to write, and make groups based upon the 
+object each is in. Take some form of data to represent this object -- usually 
+userdata, but it just needs to be something that provides the object's 
+functionalities or identifies it. Write your c functions, making one of them 
+create the object and return it, and the others take it as a first argument. 
+Note that these are not your Lua API functions just yet. When you are done, 
+create wrappers to these functions using the Lua API. For example, for a 
+function like:
+	Widget newWidget(int x, int y) {
+		return Widget(x, y, "Hello");
+	}
+we would create code like this:
+	static int LNewWidget(lua_State *L) {
+		Widget w=newWidget(lua_tonumber(L, 1), lua_tonumber(L, 2));
+		Widget *w2=lua_newuserdata(L, sizeof(w));
+		w2=w;
+		return 1;
+	}
+If this is going over your head, you should read the section of the Lua manual 
+or PIL that shows how to create normal C API functions for Lua.
+Next, create the luaL_reg structs for each object, a separate one for each. 
+Name the lua function for creating an object "init". Then create a luaL_reg 
+struct for the package as a whole. This may be empty. If it is, you're probably 
+better off making a table manually in the next step.
+Your luaopen_packagename() should look something like this:
+	static int luaopen_foo(lua_State *L) {
+		luaL_openlib(L, "foo", foo) // this is your main package
+		luaL_openlib(L, "child1", child1) // your first class
+		lua_setfield(L, -2, "child1") // set it as an element in foo
+		// may continue with repeats of last two lines for any classes
+		return 1; // you have one value to return -- foo
+	}
+And finally, we generate the lua package loader. This is done quite easily with 
+the script tools/autogen_loader.lua in this package. Simply do
+	tools/autogen_loader.lua packagename > packagename.lua
+where packagename is the name of your package. Now once you have your installer 
+script or makefile copy the created library and the package loader to a 
+directory in the Lua path, you'll be golden.
+
+A tip: Look in the file doc/capi_helpers.txt for info on functions that may 
+make coding ObjL/Lua C extensions easier.
+
+
+Good luck, and good tidings!
+

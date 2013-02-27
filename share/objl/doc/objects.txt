@@ -1,0 +1,95 @@
+OBJL OBJECTS
+
+Objects in ObjL have the following functionalities:
+- new(o)	-- create a new copy of the current object, inheriting from /o/
+		if given
+- receive(msg, args)
+		-- receive the message /msg/ and execute it with the arguments 
+		/args/. This usually means running the function /msg/ and 
+		passing it /args/.
+- forward(msg, function, address, port)
+		-- if address and port are non-nil, forward /msg/ in the current
+		object to /msg/ in the object /func/ on the server at /address/
+		and /port/, otherwise forward /msg/ to the function /func/.
+Metatable functions:
+- __newindex(t, k, v)
+		-- normal index setting function, but saves string 
+		representations of each function in the table element of 
+		the function name preceded by three underscores.
+- __add(a, b)	-- does a union of the elements in each table
+- __sub(a, b)	-- does an intersection of the elements in each table
+- __mul(a, b)	-- returns a table with /b/ copies of /a/. In other words, 
+		for an object /foo/, doing:
+			bar=foo*100
+		creates a table bar, with 100 copies of foo
+- __concat(a, b)
+		-- link to __add()
+- __unm(a)	-- reverses the table. In other words:
+			foo={ "a", "b", "c"}
+			print(-foo)
+		should print:
+			c	b	a
+
+
+
+All objects in ObjL are capable of multiple inheritence, both in the creation of
+classes, as classes, in the instantiation procedure, and as objects.
+
+To create a class, do:
+	foo=class()
+To inherit from other classes, put the class names as arguments to class():
+	foo=class(bar, baz)
+To create a class from a table framework, put the table as an argument:
+	foo=class({bar="hello", baz="NAVI"})
+To create an object from a class, use class:new(o) syntax:
+	x=foo:new()
+To inherit from another class or object during this instantiation, pass it to 
+new():
+	x=foo:new(bar)
+This works with table frameworks as well:
+	x=foo:new({bar="guten", baz="tag"})
+To make a class or object inherit the rest of the time, use the __add() or 
+__concat() metamethods:
+	foo=foo+bar
+	--  OR
+	foo=foo..bar
+Once again, this also works with table frameworks:
+	foo=foo+{zork="OMFGROFLWTF"}
+Members are accessed as you would a table:
+	print(foo.bar)
+Functions are declared outside:
+	function foo:add(x, y)
+		return x+y
+	end
+
+
+FORWARDING
+
+Functions are forwarded using object.forward() :
+	bottle=class({message="Hello, UNIX!\n"})
+	opener=class({message="Opening bottle to read secret message...\n"})
+	function bottle:open() print(self.message) end
+	function opener:read() print(self.message) open() end
+	opener.forward("open", bottle.open)
+	opener:read() 	-- Run the whole shebang
+Functions may be forwarded across processes or machines:
+	-- section of code running on localhost port 1997
+	server=class({message="Now on the remote machine."})
+	function server:domsg(args)
+		print(self.msg)
+		print(args)
+		return self.msg
+	end
+	ObjL.serve("127.0.0.1", 1997, 10)	-- start server process
+	ObjL.mainloop()				-- start main loop
+	-- section of code running in another process on localhost
+	client=class({message="A message from the client machine"})
+	function client:run()
+		print (self.message)
+		print (self.domsg({self.message}))
+	end
+	client.forward("domsg", "server", "127.0.0.1", 1997)
+	client:run()
+	ObjL.mainloop()				-- start main loop
+
+

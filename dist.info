@@ -1,0 +1,57 @@
+type = "x86_64"
+arch = "Ubuntu"
+author = "John Ohno"
+depends = {
+[[lua ~> 5.1]],
+[[luasocket >=2.0.2]],
+}
+
+desc = "An OO framework for Lua similar to that of Objective C, containing objects with multiple inheritence and forwarding to other objects, possibly between processes and machines."
+version = "0.05alpha"
+maintainer = "Peter Kapec"
+files = {
+Runtime = {
+[[lib/lua/objl_base.lua]],
+[[lib/lua/ObjL.lua]],
+[[lib/lua/objl_comm.lua]],
+[[lib/lua/objl_obj.lua]],
+}
+,
+Other = {
+[[share/objl/etc//autogen_loader.lua]],
+[[share/objl/etc//makedist.sh]],
+[[share/objl/etc//autogen_docs.lua]],
+}
+,
+Test = {
+[[share/objl/test//objecttest.lua]],
+[[share/objl/test//arraytest.lua]],
+}
+,
+Example = {
+[[share/objl/example//robinhood.lua]],
+}
+,
+Data = {
+[[share/objl/AUTHORS]],
+[[share/objl/CHANGELOG]],
+[[share/objl/LICENSE]],
+[[share/objl/README]],
+[[share/objl/THANKS]],
+}
+,
+Documentation = {
+[[share/objl/doc//README]],
+[[share/objl/doc//api.txt]],
+[[share/objl/doc//capi_helpers.txt]],
+[[share/objl/doc//actor.txt]],
+[[share/objl/doc//slicing.txt]],
+[[share/objl/doc//objl_c_interface.txt]],
+[[share/objl/doc//objects.txt]],
+}
+,
+}
+
+license = "GNU LGPL"
+name = "objl"
+url = "http://luaforge.net/projects/objl"
